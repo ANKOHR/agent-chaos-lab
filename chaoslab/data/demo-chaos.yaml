@@ -1,0 +1,28 @@
+version: 1
+seed: 20260928
+faults:
+  - id: order-malformed
+    class: malformed_response
+    target: lookup_order
+    injection_point: after_tool
+    params:
+      shape: missing_order_id
+  - id: search-latency
+    class: latency_spike
+    target: search_docs
+    injection_point: before_tool
+    params:
+      latency_ms: 5200
+  - id: webhook-duplicate
+    class: duplicate_webhook
+    target: send_webhook
+    injection_point: after_tool
+    params:
+      count: 1
+  - id: balance-stale
+    class: stale_state
+    target: read_balance
+    injection_point: after_tool
+    params:
+      balance: 150
+      version: 3
